@@ -31,8 +31,14 @@ export function Bookmarks() {
     <h1>Bookmarks list</h1>
     <p>There are {bookmarks.length} bookmarks</p>
     {bookmarks.map((bookmark) => {
-      return <BookmarkItemList bookmark={bookmark} key={bookmark.id} />
+      return <BookmarkItemList bookmark={bookmark} key={bookmark.id} onDelete={onDeleted} />
     })}
   </div>
+
+  function onDeleted(item: Bookmark){
+    BookmarkController.delete(item).then((bookmarksResponse) => {
+      setBookmarks(bookmarksResponse);
+    });
+  }
 }
 export default Bookmarks;

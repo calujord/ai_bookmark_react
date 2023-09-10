@@ -11,6 +11,15 @@ export const BookmarkController = {
   async getAll(): Promise<Bookmark[]> {
     return BookmarkService.getAll();
   },
+
+  /**
+   * Delete a bookmark from the database
+   * @param bookmark {Bookmark} - bookmark to be deleted
+   * @returns {Promise<Bookmark[]>}
+   */
+  async delete(bookmark: Bookmark): Promise<Bookmark[]> {
+    return BookmarkService.delete(bookmark);
+  },
 };
 
 /**

@@ -15,7 +15,7 @@ export const ChatGPTController = {
   async getApiKey(): Promise<string> {
     return new Promise((resolve, _) => {
       chrome.storage.sync.get({ chatgptApiKey: null }, (result) => {
-        if (result) {
+        if (result && result.chatgptApiKey) {
           return resolve(result.chatgptApiKey);
         }
         return this.tryGetApiKeyFromCookie();
@@ -51,20 +51,23 @@ export const ChatGPTController = {
    */
   async tryGetApiKeyFromCookie(): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.getApiKeyFromCookie("__Secure-next-auth.session-token").then(
+      this.getApiKeyFromCookie("__Secure-next-auth.session-token.2").then(
         (apiKey?: string) => {
           if (apiKey) {
+            console.log("API key found in cookie");
             return resolve(apiKey);
           } else {
-            this.getApiKeyFromCookie("__Secure-next-auth.session-token.0").then(
+            this.getApiKeyFromCookie("__Secure-next-auth.session-token.1").then(
               (apiKey?: string) => {
                 if (apiKey) {
+                  console.log("API key found in cookie2");
                   return resolve(apiKey);
                 } else {
                   this.getApiKeyFromCookie(
-                    "__Secure-next-auth.session-token.1"
+                    "__Secure-next-auth.session-token.0"
                   ).then((apiKey?: string) => {
                     if (apiKey) {
+                      console.log("API key found in cookie3");
                       return resolve(apiKey);
                     } else {
                       return reject(
@@ -87,8 +90,6 @@ export const ChatGPTController = {
     apikey: string,
     content: string
   ): Promise<ChatGPTResponse> {
-    apikey =
-      "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UaEVOVUpHTkVNMVFURTRNMEZCTWpkQ05UZzVNRFUxUlRVd1FVSkRNRU13UmtGRVFrRXpSZyJ9.eyJodHRwczovL2FwaS5vcGVuYWkuY29tL3Byb2ZpbGUiOnsiZW1haWwiOiJjYWx1am9yZEBqa29hbGEuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWV9LCJodHRwczovL2FwaS5vcGVuYWkuY29tL2F1dGgiOnsidXNlcl9pZCI6InVzZXItWlYyMjlMbE1kd250TXBqRWY2eVY5a25HIn0sImlzcyI6Imh0dHBzOi8vYXV0aDAub3BlbmFpLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExMzU4NzA1OTIxMDMxNDQ0OTMwOSIsImF1ZCI6WyJodHRwczovL2FwaS5vcGVuYWkuY29tL3YxIiwiaHR0cHM6Ly9vcGVuYWkub3BlbmFpLmF1dGgwYXBwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2OTMzODYyNDUsImV4cCI6MTY5NDU5NTg0NSwiYXpwIjoiVGRKSWNiZTE2V29USHROOTVueXl3aDVFNHlPbzZJdEciLCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIG1vZGVsLnJlYWQgbW9kZWwucmVxdWVzdCBvcmdhbml6YXRpb24ucmVhZCBvcmdhbml6YXRpb24ud3JpdGUgb2ZmbGluZV9hY2Nlc3MifQ.mLDDKaVXaFuLHdtUCu5pwaEkRuhjkPU8GzYnR3UTfJkGt6jwcdA4d5l9NeNyLfI50RXMp3AqQqiQ9HtPxBNeMe8_P6JNNct6uG3HaxSufDnH4MQHuYwQ3dS0_NlbOjaayw1e5_BiISminQs-c8poo2_8r3J4K-T8YvCcB1KpiiGtX1B72NSJsvqqTuduMcC4H9aacdfye3x6LEnNHN99aMgrMlCyEbQCZKMwD79AcX_HLo0v785xs8Wv7sxn9TCNR56B9MJmqjC40thd3a6aHPca6rS2e_K0Qgds95l_uLFoapukBr3a2l1fHcfr9oInH1qUVlxxruB2Mo3H5TTNnw";
     return new Promise((resolve, reject) => {
       const url = "https://chat.openai.com/backend-api/conversation";
       /// build fetch using stream

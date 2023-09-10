@@ -5,6 +5,8 @@ import { BookmarkDataStorageProps } from "./types/bookmark_data_storage.types";
 import { ChatGPTResponse } from "./types/chatgpt_response.type";
 import { ReadabilityResponse } from "./types/readability_response.types";
 import { ScoreContent } from "./types/score_content.types";
+import { FidgetSpinner } from  'react-loader-spinner'
+
 
 function BookmarkDataStorage(props: BookmarkDataStorageProps){
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -17,7 +19,20 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps){
   }
   else if (isLoading) {
     return (
-      <p>Loading data .. </p>
+      <div className="loading">
+        <h1>Bookmark Data Storage</h1>
+        <FidgetSpinner
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="dna-loading"
+          wrapperStyle={{}}
+          wrapperClass="dna-wrapper"
+          ballColors={['#D9D9D9', '#6B6B6B', '#B0B0B0']}
+          backgroundColor="#FFFFFF"
+        />
+        <p>Getting information about API ChatGPT </p>
+      </div>
     )
   }
   return(
@@ -27,7 +42,6 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps){
   )
   function getChromeStorage(): void {
     ChatGPTController.getApiKey().then((apiKey) => {
-      setIsLoading(false);
       getContentHtmlTabs().then((readabilityResponse: ReadabilityResponse) => {
         ChatGPTController.getChatgptResponse(
           readabilityResponse.url,
@@ -35,6 +49,7 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps){
           apiKey, 
           readabilityResponse.content,
         ).then((response: ChatGPTResponse) => {
+          setIsLoading(false);
           if(props.onResponse){
             props.onResponse(response);
           }

@@ -2,6 +2,7 @@ import { GrAddCircle } from "react-icons/gr";
 import Bookmarks from "../bookmark/bookmark";
 import CreateBookmark from "../bookmark/bookmark_create";
 import { useState } from "react";
+import { Bookmark } from "../bookmark/models/bookmark.models";
 /**
  * NavigationController
  * This component is responsible for displaying the application navigation, which can be: BOOKMARKS or CREATE-BOOKMARK
@@ -20,7 +21,7 @@ export function NavigationController(){
     </div>
   }
   else{
-    return <CreateBookmark />
+    return <CreateBookmark onClose={onClose} />
   }
 
   /**
@@ -30,6 +31,10 @@ export function NavigationController(){
    */
   function onNavigationChange(navigation: string): void {
     setNavigation(navigation);
+  }
+
+  function onClose(bookmark: Bookmark): void {
+    setNavigation('bookmarks');
   }
 
 

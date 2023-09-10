@@ -13,3 +13,21 @@ export const tagsElementsScore = [
   { tag: "footer", score: 1 },
   { tag: "img", score: 1 },
 ];
+export const categories = [
+  "Social Media",
+  "News and Media",
+  "Entertainment",
+  "Shopping",
+  "Work and Productivity",
+  "Educational",
+  "Technology",
+  "Health and Fitness",
+  "Travel and Leisure",
+  "Personal Development",
+  "Finance",
+  "Food and Cooking",
+  "Sports",
+  "Hobbies and Interests",
+  "Reference and Research",
+  "Miscellaneous",
+];

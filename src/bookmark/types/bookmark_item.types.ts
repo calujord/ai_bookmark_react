@@ -12,5 +12,5 @@ export interface BookmarkItemProps {
    * this function will be called when the bookmark is deleted
    * @memberof BookmarkItemProps
    */
-  onDelete?: () => void;
+  onDelete?: (item: Bookmark) => void;
 }

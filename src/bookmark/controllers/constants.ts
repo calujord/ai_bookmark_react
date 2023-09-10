@@ -1,0 +1,15 @@
+export const tagsElementsScore = [
+  { tag: "title", score: 10 },
+  { tag: "sidebar", score: 5 },
+  { tag: "header", score: 5 },
+  { tag: "h1", score: 10 },
+  { tag: "h2", score: 8 },
+  { tag: "h3", score: 7 },
+  { tag: "h4", score: 6 },
+  { tag: "h5", score: 5 },
+  { tag: "h6", score: 4 },
+  { tag: "p", score: 3 },
+  { tag: "a", score: 2 },
+  { tag: "footer", score: 1 },
+  { tag: "img", score: 1 },
+];

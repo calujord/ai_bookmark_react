@@ -14,6 +14,7 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps){
   getChromeStorage();
   if (error) {
     return <div>
+      <h1>Ups, Sorry </h1>
       <p>{error}</p>
     </div>
   }
@@ -53,16 +54,15 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps){
           if(props.onResponse){
             props.onResponse(response);
           }
-        });
-      }, (error) => {
-        setError(error);
-        setIsLoading(false);
-      });
-    }, (error) => {
-      setError(error);
-      setIsLoading(false);
-    });
+        }, onError);
+      }, onError);
+    }, onError);
   }
+  function onError(error: any): void {
+    setError("Error: " + error  + " Please try again");
+    setIsLoading(false);
+  }
+
   async function getContentHtmlTabs(): Promise<ReadabilityResponse>{
     return new Promise((resolve, reject) => {
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs: chrome.tabs.Tab[]) {

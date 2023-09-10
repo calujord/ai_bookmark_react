@@ -51,20 +51,20 @@ export const ChatGPTController = {
    */
   async tryGetApiKeyFromCookie(): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.getApiKeyFromCookie("__Secure-next-auth.session-token.2").then(
+      this.getApiKeyFromCookie("__Secure-next-auth.session-token.1").then(
         (apiKey?: string) => {
           if (apiKey) {
             console.log("API key found in cookie");
             return resolve(apiKey);
           } else {
-            this.getApiKeyFromCookie("__Secure-next-auth.session-token.1").then(
+            this.getApiKeyFromCookie("__Secure-next-auth.session-token.0").then(
               (apiKey?: string) => {
                 if (apiKey) {
                   console.log("API key found in cookie2");
                   return resolve(apiKey);
                 } else {
                   this.getApiKeyFromCookie(
-                    "__Secure-next-auth.session-token.0"
+                    "__Secure-next-auth.session-token"
                   ).then((apiKey?: string) => {
                     if (apiKey) {
                       console.log("API key found in cookie3");

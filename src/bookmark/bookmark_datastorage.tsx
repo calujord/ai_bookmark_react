@@ -6,8 +6,16 @@ import { BookmarkDataStorageProps } from "./types/bookmark_data_storage.types";
 import { ChatGPTResponse } from "./types/chatgpt_response.type";
 import { ReadabilityResponse } from "./types/readability_response.types";
 
-
-function BookmarkDataStorage(props: BookmarkDataStorageProps){
+/**
+ * 
+ * BookmarkDataStorage
+ * This component is responsible for obtaining the information of the current web page
+ * and send it to the ChatGPT API
+ * and then send the response to the parent component
+ * @param props {BookmarkDataStorageProps}
+ * @returns {JSX.Element}
+ */
+function BookmarkDataStorage(props: BookmarkDataStorageProps): JSX.Element{
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string|undefined>(undefined);
   useEffect(() => {
@@ -43,6 +51,13 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps){
         <h1>Bookmark Data Storage</h1>
     </div>
   )
+  /**
+   * Get page resumen
+   * This function is responsible for obtaining the information of the current web page
+   * and send it to the ChatGPT API
+   * and then send the response to the parent component
+   * @returns void
+   */
   function getPageResumen(): void {
     // get content html tabs
     RedabilityController.getContentHtmlTabs().then((readabilityResponse: ReadabilityResponse) => {
@@ -74,7 +89,11 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps){
       getPageResumen();
     });
   }
-
+  /**
+   * Manage error
+   * @param error {any}
+   * @returns void
+   */
   function onError(error: any): void {
     setError("Error: " + error  + ", Please try again");
     setIsLoading(false);

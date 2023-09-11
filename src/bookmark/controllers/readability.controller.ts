@@ -1,3 +1,4 @@
+import { ReadabilityResponse } from "../types/readability_response.types";
 import { ScoreContent } from "../types/score_content.types";
 import { tagsElementsScore } from "./constants";
 /**
@@ -80,5 +81,39 @@ export const RedabilityController = {
       content += element.content + " ";
     }
     return content;
+  },
+  /**
+   * Get resumen with priorities current tag.
+   * @returns {Promise<ReadabilityResponse>}
+   */
+  async getContentHtmlTabs(): Promise<ReadabilityResponse> {
+    return new Promise((resolve, reject) => {
+      chrome.tabs.query(
+        { active: true, currentWindow: true },
+        function (tabs: chrome.tabs.Tab[]) {
+          if (tabs && tabs.length !== 0) {
+            RedabilityController.getContentByTabId(tabs[0].id!).then(
+              (document: Document) => {
+                RedabilityController.getReadability(document).then(
+                  (content: ScoreContent[]) => {
+                    RedabilityController.buildContentToChatGpt(content).then(
+                      (content: string) => {
+                        return resolve({
+                          content: content,
+                          title: tabs[0].title ?? "",
+                          url: tabs[0].url ?? "",
+                        });
+                      }
+                    );
+                  }
+                );
+              }
+            );
+          } else {
+            return reject("No active tab found");
+          }
+        }
+      );
+    });
   },
 };

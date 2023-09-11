@@ -1,5 +1,12 @@
 import { ChatGPTResponse } from "../types/chatgpt_response.type";
-
+/**
+ * ChatGPTController
+ * @description
+ * It is an implementation that allows you to manage all the methods related to the chatgpt API.
+ * to obtain the api_key information through cookies.
+ * - Set the api_key in storage.
+ * - Get the response from chatgpt.
+ */
 export const ChatGPTController = {
   async setApiKey(apiKey: string): Promise<void> {
     return new Promise((resolve, _) => {
@@ -18,7 +25,21 @@ export const ChatGPTController = {
         if (result && result.chatgptApiKey) {
           return resolve(result.chatgptApiKey);
         }
-        return this.tryGetApiKeyFromCookie();
+        return this.getApikeyFromSession().then((apiKey) => {
+          console.log("API key found in cookie " + apiKey);
+          return resolve(apiKey);
+        });
+      });
+    });
+  },
+
+  /**
+   * Delete the API key from the storage.
+   */
+  async deleteApiKey(): Promise<void> {
+    return new Promise((resolve, _) => {
+      chrome.storage.sync.remove(["chatgptApiKey"], () => {
+        return resolve();
       });
     });
   },
@@ -46,41 +67,17 @@ export const ChatGPTController = {
       );
     });
   },
-  /**
-   * Try to get the API key from the cookie.
-   */
-  async tryGetApiKeyFromCookie(): Promise<string> {
+  async getApikeyFromSession(): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.getApiKeyFromCookie("__Secure-next-auth.session-token.1").then(
-        (apiKey?: string) => {
-          if (apiKey) {
-            console.log("API key found in cookie");
-            return resolve(apiKey);
-          } else {
-            this.getApiKeyFromCookie("__Secure-next-auth.session-token.0").then(
-              (apiKey?: string) => {
-                if (apiKey) {
-                  console.log("API key found in cookie2");
-                  return resolve(apiKey);
-                } else {
-                  this.getApiKeyFromCookie(
-                    "__Secure-next-auth.session-token"
-                  ).then((apiKey?: string) => {
-                    if (apiKey) {
-                      console.log("API key found in cookie3");
-                      return resolve(apiKey);
-                    } else {
-                      return reject(
-                        "API key not found, please login using chat.openai.com"
-                      );
-                    }
-                  });
-                }
-              }
-            );
-          }
+      fetch("https://chat.openai.com/api/auth/session").then((response) => {
+        if (response.status === 200) {
+          return response.json().then((data) => {
+            return resolve(data.accessToken);
+          });
+        } else {
+          return reject("Error to get api key from cookie");
         }
-      );
+      });
     });
   },
 
@@ -92,7 +89,7 @@ export const ChatGPTController = {
   ): Promise<ChatGPTResponse> {
     return new Promise((resolve, reject) => {
       const url = "https://chat.openai.com/backend-api/conversation";
-      /// build fetch using stream
+      ///build fetch using stream
       const data = {
         action: "next",
         messages: [
@@ -108,7 +105,6 @@ export const ChatGPTController = {
         model: "text-davinci-002-render-sha",
         parent_message_id: this.generateUuid(),
       };
-      console.log(data);
       return fetch(url, {
         method: "POST",
         body: JSON.stringify(data),
@@ -140,7 +136,7 @@ export const ChatGPTController = {
               }
             });
             re = resultData[resultData.length - 4];
-            /// string to json
+            ///string to json
             const responseChatGPT = {
               text: JSON.parse(re).message.content.parts[0],
               title: titlePage,

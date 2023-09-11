@@ -1,21 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FidgetSpinner } from 'react-loader-spinner';
 import { ChatGPTController } from "./controllers/chatgpt.controller";
 import { RedabilityController } from "./controllers/readability.controller";
 import { BookmarkDataStorageProps } from "./types/bookmark_data_storage.types";
 import { ChatGPTResponse } from "./types/chatgpt_response.type";
 import { ReadabilityResponse } from "./types/readability_response.types";
-import { ScoreContent } from "./types/score_content.types";
-import { FidgetSpinner } from  'react-loader-spinner'
 
 
 function BookmarkDataStorage(props: BookmarkDataStorageProps){
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string|undefined>(undefined);
-  getChromeStorage();
+  useEffect(() => {
+    getPageResumen();
+  });
   if (error) {
     return <div>
       <h1>Ups, Sorry </h1>
-      <p>{error}</p>
+      <p>We have an error, try again</p>
+      <button onClick={() => tryAgain()} className="btn">Try again</button>
     </div>
   }
   else if (isLoading) {
@@ -41,9 +43,12 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps){
         <h1>Bookmark Data Storage</h1>
     </div>
   )
-  function getChromeStorage(): void {
-    ChatGPTController.getApiKey().then((apiKey) => {
-      getContentHtmlTabs().then((readabilityResponse: ReadabilityResponse) => {
+  function getPageResumen(): void {
+    // get content html tabs
+    RedabilityController.getContentHtmlTabs().then((readabilityResponse: ReadabilityResponse) => {
+      // get api key
+      ChatGPTController.getApiKey().then((apiKey) => {
+        // get chatgpt response
         ChatGPTController.getChatgptResponse(
           readabilityResponse.url,
           readabilityResponse.title,
@@ -58,34 +63,23 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps){
       }, onError);
     }, onError);
   }
+  /**
+   * Delete cookies, 
+   * try to get the api key again
+   */
+  function tryAgain(): void {
+    setError(undefined);
+    setIsLoading(true);
+    ChatGPTController.deleteApiKey().then(() => {
+      getPageResumen();
+    });
+  }
+
   function onError(error: any): void {
-    setError("Error: " + error  + " Please try again");
+    setError("Error: " + error  + ", Please try again");
     setIsLoading(false);
   }
 
-  async function getContentHtmlTabs(): Promise<ReadabilityResponse>{
-    return new Promise((resolve, reject) => {
-      chrome.tabs.query({active: true, currentWindow: true}, function(tabs: chrome.tabs.Tab[]) {
-        console.log(tabs);
-        if(tabs && tabs.length !== 0){
-          RedabilityController.getContentByTabId(tabs[0].id!).then((document: Document) => {
-            RedabilityController.getReadability(document).then((content: ScoreContent[]) => {
-              RedabilityController.buildContentToChatGpt(content).then((content: string) => {
-                return resolve({
-                  content: content,
-                  title: tabs[0].title!,
-                  url: tabs[0].url!
-                });
-              });
-            });
-          });
-        }          
-        else{
-          return reject("No active tab found");
-        }
-      });
-    });
-  }
 
   
 }

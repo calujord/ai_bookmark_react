@@ -16,9 +16,8 @@
     "storage",
     "scripting",
     "cookies",
-    "notificationas",
+    "notifications",
     "tabs",
-    "activeTab",
     "sidePanel"
   ]
 }

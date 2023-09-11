@@ -101,7 +101,7 @@ export const ChatGPTController = {
             author: { role: "user" },
             content: {
               content_type: "text",
-              parts: [content.substring(0, 255)],
+              parts: [content.substring(0, 4095)],
             },
           },
         ],

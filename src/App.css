@@ -55,3 +55,55 @@ textarea#description {
   height: 410px;
 
 }
+a{
+  color: #ffffff;
+  text-wrap: wrap;
+}
+.item-row{
+  background: #2e2e2e;
+  border-radius: 4px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  padding-top: 1px;
+  text-align: justify;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+h2{
+  font-size: 16px;
+  letter-spacing: -0.7px;
+  color: white;
+  /** capitalize */
+  text-transform: capitalize;
+}
+.mt-2{
+  margin-top: 12px;
+}
+button.btn:hover{
+  background: white;
+  color: #252525;
+}
+.category-label{
+  font-weight: bold;
+  background: white;
+  color: #3d3d3d;
+  display: initial;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-radius: 4px;
+}
+.btn-link{
+  background: white;
+  color: #252525;
+}
+button.btn.btn-error{
+  background: #611b1b;
+  color: #fff0f0;
+}
+button.btn.btn-error:hover{
+  background: rgb(107, 38, 38);
+  color: rgb(215, 197, 197);
+}

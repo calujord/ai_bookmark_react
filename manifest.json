@@ -7,6 +7,9 @@
     "default_popup": "js/index.html",
     "default_title": "React Chrome Extension"
   },
+  "side_panel": {
+    "default_path": "js/index.html"
+  },
   "host_permissions": ["https://twitter.com/", "https://chat.openai.com/*"],
   "permissions": [
     "activeTab",
@@ -15,6 +18,7 @@
     "cookies",
     "notificationas",
     "tabs",
-    "activeTab"
+    "activeTab",
+    "sidePanel"
   ]
 }

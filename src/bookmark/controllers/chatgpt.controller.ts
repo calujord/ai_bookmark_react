@@ -20,14 +20,17 @@ export const ChatGPTController = {
    * @returns {Promise<string>}
    */
   async getApiKey(): Promise<string> {
-    return new Promise((resolve, _) => {
+    return new Promise((resolve, reject) => {
       chrome.storage.sync.get({ chatgptApiKey: null }, (result) => {
         if (result && result.chatgptApiKey) {
           return resolve(result.chatgptApiKey);
         }
         return this.getApikeyFromSession().then((apiKey) => {
-          console.log("API key found in cookie " + apiKey);
-          return resolve(apiKey);
+          if (apiKey) {
+            return resolve(apiKey);
+          } else {
+            return reject("ChatGPTError, plase login in chatgpt.com");
+          }
         });
       });
     });

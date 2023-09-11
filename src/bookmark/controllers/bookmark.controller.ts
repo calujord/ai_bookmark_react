@@ -2,6 +2,7 @@ import { Bookmark } from "../models/bookmark.models";
 
 export const BookmarkController = {
   async createBookmark(bookmark: Bookmark) {
+    console.log("bookmark", bookmark);
     return BookmarkService.createBookmark(bookmark);
   },
   /**

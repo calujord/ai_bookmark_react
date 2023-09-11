@@ -24,7 +24,7 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps): JSX.Element{
   if (error) {
     return <div>
       <h1>Ups, Sorry </h1>
-      <p>We have an error, try again</p>
+      <p>{error}</p>
       <button onClick={() => tryAgain()} className="btn">Try again</button>
     </div>
   }

@@ -10,13 +10,16 @@ import { BookmarkFormProps } from "./types/bookmark_form.types";
 export function BookmarkForm(properties: BookmarkFormProps): JSX.Element{
   
   const [cat, setCategory] = useState<string|undefined>(undefined);
+  const [title, setTitle] = useState<string|undefined>(properties.chatgptResponse?.title || "");
+  const [description, setDescription] = useState<string|undefined>(properties.chatgptResponse?.text || "");
+
 
   return <div>
     <h1>Create new bookmark</h1>
     <form onSubmit={onSubmit}>
       <div>
         <label htmlFor="title">Title</label>
-        <input type="text" name="title" id="title" value={properties.chatgptResponse?.title} />
+        <input type="text" name="title" id="title" value={title} onChange={ handleInputChange } />
       </div>
       <div>
         <label htmlFor="category">Category</label>
@@ -30,7 +33,7 @@ export function BookmarkForm(properties: BookmarkFormProps): JSX.Element{
       </div>
       <div>
         <label htmlFor="description">Description</label>
-        <textarea name="description" id="description" value={properties.chatgptResponse?.text} />
+        <textarea name="description" id="description" value={description} onChange={handleTextAreaChange} />
       </div>
       <button type="submit" className="btn">Create</button>
     </form>
@@ -43,6 +46,22 @@ export function BookmarkForm(properties: BookmarkFormProps): JSX.Element{
  */
 function handleSelectChange(event: React.ChangeEvent<HTMLSelectElement>): void {
   setCategory(event.target.value);
+}
+/**
+ * handle text area change event
+ * @param event {React.ChangeEvent<HTMLTextAreaElement>}
+ */
+function handleTextAreaChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
+  setDescription(event.target.value);
+}
+
+/**
+ * Handle input change event
+ * @param event {React.ChangeEvent<HTMLInputElement>}
+ * @returns void
+ */
+function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
+  setTitle(event.target.value);
 }
 
 /**

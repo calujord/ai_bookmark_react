@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BookmarkItemList } from "./bookmark_item_list";
 import { BookmarkController } from "./controllers/bookmark.controller";
 import { Bookmark } from "./models/bookmark.models";
@@ -18,9 +18,11 @@ export function Bookmarks() {
    * 4. Add a button to edit bookmarks
    * 5. Add a button to add bookmarks
    */
-  BookmarkController.getAll().then((bookmarks) => {
-    setBookmarks(bookmarks);
-  });
+  useEffect(() => {
+    BookmarkController.getAll().then((bookmarks) => {
+      setBookmarks(bookmarks);
+    });
+  }, []);
   if(bookmarks.length === 0){
     return <div>
       <h1>Bookmarks list</h1>

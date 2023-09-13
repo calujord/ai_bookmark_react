@@ -16,9 +16,13 @@ export function BookmarkItemList(item: BookmarkItemProps): JSX.Element{
     onDragStart={handleDragStart}
     onDragEnd={handleDragEnd}
     >
-    <h4 className="item-row-title" onClick={onShowMoreDetails}>{item.bookmark.title}</h4>
+    <h4 className="item-row-title truncate" onClick={onShowMoreDetails}>{item.bookmark.title}</h4>
+    <div className="info">
+      <label className="category-label">{item.bookmark.category}</label>
+      <label className="category-label">{getOnlyUrl()}</label>
+    </div>
     <div className={getClassName()}>
-      <p className="category-label">{item.bookmark.category}</p>
+      
       <p>{item.bookmark.description}</p>
       <a target="_blank" href={item.bookmark.url} rel="noreferrer" className="category-label">
         Open link
@@ -27,6 +31,15 @@ export function BookmarkItemList(item: BookmarkItemProps): JSX.Element{
       <button className="btn btn-error mt-2" onClick={onDelete}>Delete</button>
     </div>
   </div>
+
+  /**
+   * Get only url website without protocol
+   */
+  function getOnlyUrl(): string{
+    const url = item.bookmark.url;
+    const urlObject = new URL(url);
+    return urlObject.hostname;
+  }
 
   /**
    * Handle drag start event

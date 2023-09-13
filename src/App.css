@@ -184,3 +184,21 @@ input:focus:hover {
 .drop{
   background-color: blue!important;
 }
+.info{
+  margin-top: 10px;
+}
+.info label{
+  font-weight: bold;
+  margin-right: 5px;
+}
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 2.4em; /* Adjust as needed for two lines of text */
+  line-height: 1.2em; /* Should be half of max-height to show two lines */
+}
+.categories{
+  height: 460px;
+  overflow: overlay;
+}

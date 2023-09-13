@@ -2,7 +2,6 @@ import { Bookmark } from "../models/bookmark.models";
 
 export const BookmarkController = {
   async createBookmark(bookmark: Bookmark) {
-    console.log("bookmark", bookmark);
     return BookmarkService.createBookmark(bookmark);
   },
   /**
@@ -20,6 +19,27 @@ export const BookmarkController = {
    */
   async delete(bookmark: Bookmark): Promise<Bookmark[]> {
     return BookmarkService.delete(bookmark);
+  },
+
+  async updateCategory(
+    bookmark: Bookmark,
+    category: string
+  ): Promise<Bookmark[]> {
+    bookmark.category = category;
+    return this.update(bookmark);
+  },
+
+  async update(bookmark: Bookmark): Promise<Bookmark[]> {
+    return BookmarkService.getAll().then((bookmarks) => {
+      const newBookmarks = bookmarks.map((item) => {
+        if (item.id === bookmark.id) {
+          return bookmark;
+        }
+        return item;
+      });
+      chrome.storage.sync.set({ xBookMarks: newBookmarks });
+      return newBookmarks;
+    });
   },
 };
 

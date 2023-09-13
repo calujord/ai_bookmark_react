@@ -13,4 +13,6 @@ export interface BookmarkItemProps {
    * @memberof BookmarkItemProps
    */
   onDelete?: (item: Bookmark) => void;
+
+  onMoveOrigin: (item?: Bookmark) => void;
 }

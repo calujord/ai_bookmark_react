@@ -1,14 +1,17 @@
 {
   "version": "1.0.0",
   "manifest_version": 3,
-  "name": "React Chrome Extension",
-  "description": "This is a Chrome extension built with React and TypeScript",
+  "name": "PopCorn Bookmarks",
+  "description": "AI Bookmarks to help your future self remember why you saved this page",
+  "icons": {
+    "16": "images/16.png",
+    "32": "images/32.png",
+    "48": "images/48.png",
+    "128": "images/128.png"
+  },
   "action": {
     "default_popup": "js/index.html",
-    "default_title": "React Chrome Extension"
-  },
-  "side_panel": {
-    "default_path": "js/index.html"
+    "default_title": "PopCorn Bookmark"
   },
   "host_permissions": ["https://twitter.com/", "https://chat.openai.com/*"],
   "permissions": [
@@ -16,7 +19,7 @@
     "storage",
     "scripting",
     "cookies",
-    "notificationas",
+    "notifications",
     "tabs",
     "activeTab",
     "sidePanel"

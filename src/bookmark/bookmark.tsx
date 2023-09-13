@@ -3,6 +3,7 @@ import { BookmarkController } from "./controllers/bookmark.controller";
 import { Bookmark } from "./models/bookmark.models";
 import { BookmarkList } from "./bookmarks.list";
 import { BookmarkCategories } from "./categories/bookmark_categories";
+import { CategoryBoookmarkState } from "./categories/category.type";
 
 /**
  * This is the Bookmarks component, it will display a list of bookmarks
@@ -12,7 +13,9 @@ import { BookmarkCategories } from "./categories/bookmark_categories";
 export function Bookmarks() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [search, setSearch] = useState<string>('');
+  const [categoryBoookmarkState, setCategoryBookmark] = useState<CategoryBoookmarkState>({});
   const [category, setCategory] = useState<string|undefined>(undefined);
+
   /// TODO: Implement this component
   useEffect(() => {
     BookmarkController.getAll().then((bookmarks) => {
@@ -23,15 +26,54 @@ export function Bookmarks() {
     <h1>Bookmarks</h1>
     <input type="text" placeholder="Search" value={search} onChange={onSearch} />
     <div>
-      <BookmarkCategories onCategorySelected={onCategorySelected} />
-      <BookmarkList bookmarks={getBookmarks()} onDeleted={onDeleted} />
+      <BookmarkCategories onCategorySelected={onCategorySelected} onMoveDestination={onMoveDestination} />
+      <BookmarkList bookmarks={getBookmarks()} onDeleted={onDeleted} onMoveOrigin={onMoveOrigin} />
     </div>
   </div>
   
   function onCategorySelected(category: string|undefined) {
-    console.log(category);
     setCategory(category);
     setSearch(search);
+  }
+
+  /**
+   * Handle drop event on bookmark list
+   * @param category {string}
+   * @returns void
+   */
+  function onMoveDestination(category: string){
+    /**
+     * Change bookmark category.
+     */
+    if(categoryBoookmarkState.bookmark){
+      const bookmark = categoryBoookmarkState.bookmark;
+      bookmark.category = category;
+      BookmarkController.update(bookmark).then((bookmarksResponse) => {
+        setBookmarks(bookmarksResponse);
+      });
+      setCategoryBookmark({
+        category: undefined,
+        bookmark: undefined
+      });
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl: 'images/icon48.png',
+        title: 'Notification Example',
+        message: 'This is a sample notification from your extension.'
+      });
+    }
+  }
+  /** 
+   * Handle drag bookmark event
+   * @param bookmark {Bookmark}
+   * @returns void
+   */
+  function onMoveOrigin(bookmark?: Bookmark): void{
+    console.log(bookmark, "onMoveOrigin");
+    setCategoryBookmark({
+      category: category,
+      bookmark: bookmark
+    });
   }
 
   /**

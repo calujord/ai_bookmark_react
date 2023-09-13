@@ -16,7 +16,12 @@ export function BookmarkList(properties: BookmarkSearch): JSX.Element {
   }
   return <div className="bookmarks-list">
     { properties.bookmarks.map((bookmark) => {
-        return <BookmarkItemList bookmark={bookmark} key={bookmark.id} onDelete={properties.onDeleted} />
+        return <BookmarkItemList 
+          bookmark={bookmark} 
+          key={bookmark.id} 
+          onDelete={properties.onDeleted} 
+          onMoveOrigin={properties.onMoveOrigin}
+          />
       }) 
     }
   </div>

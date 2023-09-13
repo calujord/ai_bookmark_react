@@ -1,11 +1,21 @@
 import { useState } from "react";
 import { BookmarkItemProps } from "./types/bookmark_item.types";
 
-
-export function BookmarkItemList(item: BookmarkItemProps){
+/**
+ * Render bookmark item list
+ * @param item {BookmarkItemProps}
+ * @returns {JSX.Element}
+ */
+export function BookmarkItemList(item: BookmarkItemProps): JSX.Element{
   const [showMoreDetails, setShowMoreDetails] = useState<boolean>(false);
 
-  return <div className={showMoreDetails ? 'activate item-row' : 'item-row'}>
+  return <div 
+    draggable={true}
+    key={item.bookmark.id}
+    className={showMoreDetails ? 'activate item-row' : 'item-row'}
+    onDragStart={handleDragStart}
+    onDragEnd={handleDragEnd}
+    >
     <h4 className="item-row-title" onClick={onShowMoreDetails}>{item.bookmark.title}</h4>
     <div className={getClassName()}>
       <p className="category-label">{item.bookmark.category}</p>
@@ -16,20 +26,47 @@ export function BookmarkItemList(item: BookmarkItemProps){
       <br />
       <button className="btn btn-error mt-2" onClick={onDelete}>Delete</button>
     </div>
-    
-    
   </div>
-  function getClassName(){
+
+  /**
+   * Handle drag start event
+   * @param event {React.DragEvent<HTMLDivElement>}
+   * @returns void
+   */
+  function handleDragStart(event: React.DragEvent<HTMLDivElement>): void{
+    item.onMoveOrigin(item.bookmark);
+  }
+  /**
+   * Handle drag end event
+   * @param event {React.DragEvent<HTMLDivElement>}
+   * @returns void
+   */
+  function handleDragEnd(event: React.DragEvent<HTMLDivElement>): void{
+    item.onMoveOrigin(undefined);
+  }
+  /**
+   * Get class name for more details
+   * @returns {string}
+   */
+  function getClassName(): string{
     if(!showMoreDetails){
       return 'more-details-hidden';
     }
     return 'more-details-show';
   }
-
-  function onShowMoreDetails(){
+  /**
+   * Show more details
+   * @returns void
+   */
+  function onShowMoreDetails(): void{
     setShowMoreDetails(!showMoreDetails);
   }
-  function onDelete(){
+
+  /**
+   * Delete bookmark from de list of bookmarks
+   * @returns void
+   */
+  function onDelete(): void{
     if(item.onDelete){
       item.onDelete(item.bookmark);
     }

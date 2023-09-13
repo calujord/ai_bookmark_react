@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { categories } from "../controllers/constants";
 import { CategoryProperties } from "./category.type";
+import { BookmarkCategoryItem } from "./bookmark_category_item";
 
 /**
  * @module BookmarkCategories
@@ -8,7 +9,13 @@ import { CategoryProperties } from "./category.type";
  * @returns {JSX.Element}
  */
 export function BookmarkCategories(properties: CategoryProperties): JSX.Element {
+  /**
+   * @constant categorySelected {string|undefined}
+   * @description This is the category selected
+   * @default undefined
+   */
   const [categorySelected, setCategorySelected] = useState<string|undefined>(undefined)
+
   return <div className="categories">
     <ul>
       <li 
@@ -17,17 +24,24 @@ export function BookmarkCategories(properties: CategoryProperties): JSX.Element 
       >All</li>
       {
         categories.map((category) => {
-          return <li
-            key={category} 
-            className={categorySelected === category ? 'selected' : ''}
-            onClick={() => onCategorySelected(category)}
-           >{category}</li>
+          return <BookmarkCategoryItem
+            category={category}
+            isSelected={categorySelected === category}
+            onCategorySelected={onCategorySelected}
+            onMoveDestination={properties.onMoveDestination}
+            key={category}
+          />
         })
       }
       
     </ul>
   </div>
-
+  
+  /**
+   * Event on select category
+   * @param category {string|undefined}
+   * @returns void
+   */
   function onCategorySelected(category: string|undefined){
     setCategorySelected(category);
     if(properties.onCategorySelected){

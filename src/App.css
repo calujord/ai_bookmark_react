@@ -1,8 +1,8 @@
 body{
   background-color: #151515;
   color: #b0b0b0;
-  width: 350px;
-  height: 420px;
+  width: 650px;
+  height: 550px;
   padding: 10px;
 }
 #add-button{
@@ -52,30 +52,37 @@ textarea#description {
 .bookmarks-list{
   /** scrollable */
   overflow-y: auto;
-  height: 410px;
+  height: 450px;
 
 }
 a{
   color: #ffffff;
   text-wrap: wrap;
 }
+.item-row-title{
+  cursor: pointer;
+}
+.activate.item-row{
+  border: 2px solid #7e7d7d;
+}
 .item-row{
   background: #2e2e2e;
-  border-radius: 4px;
-  padding-right: 10px;
-  padding-left: 10px;
-  padding-bottom: 5px;
-  padding-top: 1px;
+  border-radius: 6px;
+  padding: 10px;
   text-align: justify;
   margin-top: 5px;
   margin-bottom: 5px;
+  border: 2px solid #3f3f3f;
+  box-shadow: 0px 0px 1px 0px #595959;
 }
-h2{
-  font-size: 16px;
-  letter-spacing: -0.7px;
-  color: white;
-  /** capitalize */
+h4{
+  font-size: 15px;
+  letter-spacing: -0.1px;
+  color: #f2f2f2;
+  margin: 0px;
+  padding: 0px;
   text-transform: capitalize;
+  font-weight: 400;
 }
 .mt-2{
   margin-top: 12px;
@@ -106,4 +113,71 @@ button.btn.btn-error{
 button.btn.btn-error:hover{
   background: rgb(107, 38, 38);
   color: rgb(215, 197, 197);
+}
+button.add-btn path{
+  stroke: #8f8f8f;
+}
+button.add-btn{
+  background: #252525;
+  border: 0px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 4px 0px darkgrey;
+  padding: 10px;
+}
+/* Remove the border focus on input */
+input:focus {
+  outline: none;
+  border: 2px solid transparent; /* Hide the border */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add a box shadow for focus */
+}
+
+/* Add back a border when the input is focused and hovered (optional) */
+input:focus:hover {
+  border: 2px solid #ccc;
+}
+
+.more-details-hidden{
+  display: none;
+}
+.more-details-show{
+  padding-top: 10px;
+}
+.categories{
+  float: left;
+  width: 30%;
+}
+.bookmarks-list{
+  float: right;
+  width: 70%;
+}
+.categories ul li:hover{
+  background: #3f3f3f;
+  cursor: pointer;
+}
+.categories ul {
+  padding: 0px;
+  margin: 0px;
+  padding-right: 10px;
+}
+.categories ul li {
+  list-style: none;
+  padding: 7px;
+  margin-top: 5px;
+  border: 1px solid #4c4c4c;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  background: #2e2e2e;
+  font-weight: bold;
+}
+.categories ul li.selected {
+  color: #151515;
+  background: #737373!important;
+}
+.no-found-list path{
+  stroke: #8f8f8f;
+}
+.no-found-list{
+  text-align: center;
+  font-size: 16px;
+  padding-top: 80px;
 }

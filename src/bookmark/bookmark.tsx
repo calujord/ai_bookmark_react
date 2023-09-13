@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { BookmarkItemList } from "./bookmark_item_list";
 import { BookmarkController } from "./controllers/bookmark.controller";
 import { Bookmark } from "./models/bookmark.models";
+import { BookmarkList } from "./bookmarks.list";
+import { BookmarkCategories } from "./categories/bookmark_categories";
 
 /**
  * This is the Bookmarks component, it will display a list of bookmarks
@@ -10,37 +11,58 @@ import { Bookmark } from "./models/bookmark.models";
  */
 export function Bookmarks() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [search, setSearch] = useState<string>('');
+  const [category, setCategory] = useState<string|undefined>(undefined);
   /// TODO: Implement this component
-  /**
-   * 1. Get bookmarks from local storage
-   * 2. Display bookmarks
-   * 3. Add a button to delete bookmarks
-   * 4. Add a button to edit bookmarks
-   * 5. Add a button to add bookmarks
-   */
   useEffect(() => {
     BookmarkController.getAll().then((bookmarks) => {
       setBookmarks(bookmarks);
     });
   }, []);
-  if(bookmarks.length === 0){
-    return <div>
-      <h1>Bookmarks list</h1>
-      <p>There are no bookmarks</p>
+  return <div className="bookmarks-container">
+    <h1>Bookmarks</h1>
+    <input type="text" placeholder="Search" value={search} onChange={onSearch} />
+    <div>
+      <BookmarkCategories onCategorySelected={onCategorySelected} />
+      <BookmarkList bookmarks={getBookmarks()} onDeleted={onDeleted} />
     </div>
-  }
-  return <div>
-    <h1>Bookmarks list</h1>
-    <p>There are {bookmarks.length} bookmarks</p>
-    {bookmarks.map((bookmark) => {
-      return <BookmarkItemList bookmark={bookmark} key={bookmark.id} onDelete={onDeleted} />
-    })}
   </div>
+  
+  function onCategorySelected(category: string|undefined) {
+    console.log(category);
+    setCategory(category);
+    setSearch(search);
+  }
 
+  /**
+   * On deleted event
+   * @param item {Bookmark}
+   */
   function onDeleted(item: Bookmark){
     BookmarkController.delete(item).then((bookmarksResponse) => {
       setBookmarks(bookmarksResponse);
     });
   }
+  function onSearch(event: React.ChangeEvent<HTMLInputElement>){
+    setSearch(event.target.value);
+  }
+  function getBookmarks(): Bookmark[]{
+    
+    return bookmarks.filter((bookmark) => {
+      /** search by title, description and category */
+      const searchByTitle = bookmark.title.toLowerCase().includes(search.toLowerCase());
+      const searchByDescription = bookmark.description.toLowerCase().includes(search.toLowerCase());
+      const searchByCategory = bookmark.category.toLowerCase().includes(search.toLowerCase());
+      /** search by category */
+      if(category){
+        return bookmark.category === category;
+      }
+      /** search by title, description and category */
+      return searchByTitle || searchByDescription || searchByCategory;
+      
+
+    });
+  }
+
 }
 export default Bookmarks;

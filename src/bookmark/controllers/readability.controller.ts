@@ -73,9 +73,11 @@ export const RedabilityController = {
    * @param {Array} contentList
    * @returns {string}
    */
-  async buildContentToChatGpt(contentList: ScoreContent[]): Promise<string> {
-    let content =
-      "Please forget all prior prompts. I want you to become an Expert summarizing content. Your goal is to help me get context for my website bookmarks. Please follow the following process, you will provide four different responses, each on double space clearly separated paragraphs: First a 100 character high level summary of the content. Second, a 300 character detailed summary of the content in double space bullet points. Third provide today's date and time. Fourth a rating 1 to 10 based of the accuracy of the previous step-by-step summary. Please do not include any apology on your response, just straight to the facts of what can be provided. Thank you. ";
+  async buildContentToChatGpt(
+    contentList: ScoreContent[],
+    prompt: string
+  ): Promise<string> {
+    let content = prompt;
     for (let index = 0; index < contentList.length; index++) {
       const element = contentList[index];
       /// check more inteligent the content
@@ -87,7 +89,7 @@ export const RedabilityController = {
    * Get resumen with priorities current tag.
    * @returns {Promise<ReadabilityResponse>}
    */
-  async getContentHtmlTabs(): Promise<ReadabilityResponse> {
+  async getContentHtmlTabs(prompt: string): Promise<ReadabilityResponse> {
     return new Promise((resolve, reject) => {
       chrome.tabs.query(
         { active: true, currentWindow: true },
@@ -97,15 +99,16 @@ export const RedabilityController = {
               (document: Document) => {
                 RedabilityController.getReadability(document).then(
                   (content: ScoreContent[]) => {
-                    RedabilityController.buildContentToChatGpt(content).then(
-                      (content: string) => {
-                        return resolve({
-                          content: content,
-                          title: tabs[0].title ?? "",
-                          url: tabs[0].url ?? "",
-                        });
-                      }
-                    );
+                    RedabilityController.buildContentToChatGpt(
+                      content,
+                      prompt
+                    ).then((content: string) => {
+                      return resolve({
+                        content: content,
+                        title: tabs[0].title ?? "",
+                        url: tabs[0].url ?? "",
+                      });
+                    });
                   }
                 );
               }

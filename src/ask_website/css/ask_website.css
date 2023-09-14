@@ -2,12 +2,13 @@
   height: 520px;
 }
 .chat {
-  max-width: 400px;
   margin: 20px auto;
   background-color: #3a3a3a;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
+  height: 430px;
+  overflow: scroll;
 }
 
 .messages {
@@ -45,13 +46,18 @@
 }
 
 #send-button {
-  padding: 5px 10px;
   margin-left: 10px;
   background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 3px;
   cursor: pointer;
+  height: 30px;
+  margin-top: 4px;
+}
+#send-button:disabled {
+  background-color: #6c6c6c;
+  color: #fff;
 }
 
 #send-button:hover {

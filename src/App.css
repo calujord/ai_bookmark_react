@@ -210,3 +210,23 @@ input:focus:hover {
 .content-message {
   white-space: pre-line;
 }
+.wrapper {
+  white-space: pre-wrap;
+}
+p.wrapper.message-user {
+  text-align: right;
+  width: 100%;
+}
+.message.sent.user {
+  background: #1f1f1f;
+}
+p.wrapper.message-bot {
+  text-align: left;
+}
+.loading-askme{
+  text-align: center;
+  height: 510px;
+}
+.navigators{
+  padding-bottom: 10px;
+}

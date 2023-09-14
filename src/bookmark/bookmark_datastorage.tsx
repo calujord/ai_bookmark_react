@@ -15,6 +15,13 @@ import { ReadabilityResponse } from "./types/readability_response.types";
  * @param props {BookmarkDataStorageProps}
  * @returns {JSX.Element}
  */
+const promptStorage = "Please forget all prior prompts. I want you to become an Expert summarizing content. Your goal is to help me get context for my website bookmarks. Please follow the following process, you will provide four different responses, each on double space clearly separated paragraphs: First a 100 character high level summary of the content. Second, a 300 character detailed summary of the content in double space bullet points. Third provide today's date and time. Fourth a rating 1 to 10 based of the accuracy of the previous step-by-step summary. Please do not include any apology on your response, just straight to the facts of what can be provided. Thank you. ";
+
+/**
+ * 
+ * @param props {BookmarkDataStorageProps}
+ * @returns {JSX.Element}
+ */
 function BookmarkDataStorage(props: BookmarkDataStorageProps): JSX.Element{
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string|undefined>(undefined);
@@ -60,7 +67,7 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps): JSX.Element{
    */
   function getPageResumen(): void {
     // get content html tabs
-    RedabilityController.getContentHtmlTabs().then((readabilityResponse: ReadabilityResponse) => {
+    RedabilityController.getContentHtmlTabs(promptStorage).then((readabilityResponse: ReadabilityResponse) => {
       // get api key
       ChatGPTController.getApiKey().then((apiKey) => {
         // get chatgpt response
@@ -95,11 +102,8 @@ function BookmarkDataStorage(props: BookmarkDataStorageProps): JSX.Element{
    * @returns void
    */
   function onError(error: any): void {
-    setError("Error: " + error  + ", Please try again");
     setIsLoading(false);
+    setError("Error: " + error  + ", Please try again");
   }
-
-
-  
 }
 export default BookmarkDataStorage;

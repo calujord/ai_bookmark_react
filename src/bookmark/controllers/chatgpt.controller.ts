@@ -1,4 +1,5 @@
 import { ChatGPTResponse } from "../types/chatgpt_response.type";
+import { generateUUID } from "./uuid";
 /**
  * ChatGPTController
  * @description
@@ -21,7 +22,7 @@ export const ChatGPTController = {
    */
   async getApiKey(): Promise<string> {
     return new Promise((resolve, reject) => {
-      chrome.storage.sync.get({ chatgptApiKey: null }, (result) => {
+      return chrome.storage.sync.get({ chatgptApiKey: null }, (result) => {
         if (result && result.chatgptApiKey) {
           return resolve(result.chatgptApiKey);
         }
@@ -31,7 +32,7 @@ export const ChatGPTController = {
           } else {
             return reject("ChatGPTError, plase login in chatgpt.com");
           }
-        });
+        }, reject);
       });
     });
   },
@@ -78,7 +79,9 @@ export const ChatGPTController = {
             return resolve(data.accessToken);
           });
         } else {
-          return reject("Error to get api key from cookie");
+          return response.json().then((data) => {
+            return reject(`ChatGPTError: ${data.details}`);
+          });
         }
       });
     });
@@ -88,7 +91,8 @@ export const ChatGPTController = {
     urlPage: string,
     titlePage: string,
     apikey: string,
-    content: string
+    content: string,
+    parent_message_id?: string
   ): Promise<ChatGPTResponse> {
     return new Promise((resolve, reject) => {
       const url = "https://chat.openai.com/backend-api/conversation";
@@ -97,7 +101,7 @@ export const ChatGPTController = {
         action: "next",
         messages: [
           {
-            id: this.generateUuid(),
+            id: generateUUID(),
             author: { role: "user" },
             content: {
               content_type: "text",
@@ -106,7 +110,7 @@ export const ChatGPTController = {
           },
         ],
         model: "text-davinci-002-render-sha",
-        parent_message_id: this.generateUuid(),
+        parent_message_id: parent_message_id ?? generateUUID(),
       };
       return fetch(url, {
         method: "POST",
@@ -153,16 +157,5 @@ export const ChatGPTController = {
           return reject(error);
         });
     });
-  },
-
-  generateUuid() {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-      /[xy]/g,
-      function (c) {
-        let r = (Math.random() * 16) | 0,
-          v = c === "x" ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      }
-    );
   },
 };

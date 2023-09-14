@@ -1,5 +1,6 @@
+import './css/ask_website.css';
 export function AskWebsite(){
-  return <div>
+  return <div className="ask-website">
     <div className="chat">
         <div className="message received">
             <p>Hola, ¿cómo estás?</p>

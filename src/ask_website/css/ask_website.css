@@ -1,8 +1,10 @@
-
+.ask-website{
+  height: 520px;
+}
 .chat {
   max-width: 400px;
   margin: 20px auto;
-  background-color: #fff;
+  background-color: #3a3a3a;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
@@ -19,12 +21,12 @@
 }
 
 .received {
-  background-color: #e1e1e1;
+  background-color: #282828;
   text-align: left;
 }
 
 .sent {
-  background-color: #007bff;
+  background-color: #000000;
   color: #fff;
   text-align: right;
 }

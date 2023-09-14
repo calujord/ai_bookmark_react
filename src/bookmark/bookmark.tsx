@@ -25,7 +25,7 @@ export function Bookmarks() {
   return <div className="bookmarks-container">
     <h1>Bookmarks</h1>
     <input type="text" placeholder="Search" value={search} onChange={onSearch} />
-    <div>
+    <div className="row">
       <BookmarkCategories onCategorySelected={onCategorySelected} onMoveDestination={onMoveDestination} />
       <BookmarkList bookmarks={getBookmarks()} onDeleted={onDeleted} onMoveOrigin={onMoveOrigin} />
     </div>

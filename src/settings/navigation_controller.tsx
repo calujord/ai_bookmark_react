@@ -1,8 +1,9 @@
-import { GrAddCircle } from "react-icons/gr";
 import Bookmarks from "../bookmark/bookmark";
 import CreateBookmark from "../bookmark/bookmark_create";
 import { useState } from "react";
 import { Bookmark } from "../bookmark/models/bookmark.models";
+import FooterNavigator from "./footer/footer_navigator";
+import { AskWebsite } from "../ask_website/ask_website";
 /**
  * NavigationController
  * This component is responsible for displaying the application navigation, which can be: BOOKMARKS or CREATE-BOOKMARK
@@ -15,9 +16,13 @@ export function NavigationController(){
   if (navigation === "bookmarks") {
     return <div className="navigators">
       <Bookmarks />
-      <button className="add-btn" id="add-button" onClick={() => onNavigationChange('create-bookmark')}>
-        <GrAddCircle size={32} color='#b0b0b0' title='Add Bookmark' />
-      </button>
+      <FooterNavigator onNavigationChange={onNavigationChange} />
+    </div>
+  }
+  else if (navigation === "ask-website") {
+    return <div className="navigators">
+      <AskWebsite />
+      <FooterNavigator onNavigationChange={onNavigationChange} />
     </div>
   }
   else{

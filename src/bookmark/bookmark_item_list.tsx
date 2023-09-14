@@ -10,7 +10,7 @@ export function BookmarkItemList(item: BookmarkItemProps): JSX.Element{
   const [showMoreDetails, setShowMoreDetails] = useState<boolean>(false);
 
   return <div 
-    draggable={true}
+    draggable={isDraggable()}
     key={item.bookmark.id}
     className={showMoreDetails ? 'activate item-row' : 'item-row'}
     onDragStart={handleDragStart}
@@ -23,7 +23,7 @@ export function BookmarkItemList(item: BookmarkItemProps): JSX.Element{
     </div>
     <div className={getClassName()}>
       
-      <p>{item.bookmark.description}</p>
+      <p className="content-message">{item.bookmark.description}</p>
       <a target="_blank" href={item.bookmark.url} rel="noreferrer" className="category-label">
         Open link
       </a>
@@ -31,6 +31,14 @@ export function BookmarkItemList(item: BookmarkItemProps): JSX.Element{
       <button className="btn btn-error mt-2" onClick={onDelete}>Delete</button>
     </div>
   </div>
+
+  /**
+   * Check if item is draggable
+   * The container is draggable if the bookmark is not opened
+   */
+  function isDraggable(): boolean{
+    return !showMoreDetails;
+  }
 
   /**
    * Get only url website without protocol

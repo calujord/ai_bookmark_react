@@ -5,6 +5,9 @@ body{
   height: 550px;
   padding: 10px;
 }
+.row{
+  display: flex;
+}
 #add-button{
   position: absolute;
   bottom: 10px;
@@ -176,10 +179,12 @@ input:focus:hover {
 .no-found-list path{
   stroke: #8f8f8f;
 }
+.no-found-list svg{
+  padding-top: 80px;
+}
 .no-found-list{
   text-align: center;
   font-size: 16px;
-  padding-top: 80px;
 }
 .drop{
   background-color: blue!important;
@@ -199,6 +204,9 @@ input:focus:hover {
   line-height: 1.2em; /* Should be half of max-height to show two lines */
 }
 .categories{
-  height: 460px;
+  height: 420px;
   overflow: overlay;
+}
+.content-message {
+  white-space: pre-line;
 }

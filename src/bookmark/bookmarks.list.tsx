@@ -9,7 +9,7 @@ import { BookmarkSearch } from "./types/bookmark_search.types";
  */
 export function BookmarkList(properties: BookmarkSearch): JSX.Element {
   if(properties.bookmarks.length === 0){
-    return <div className="no-found-list">
+    return <div className="bookmarks-list no-found-list">
       <GrList size={32} color='#b0b0b0' title='No bookmarks found' />
       <p>There are no bookmarks</p>
     </div>

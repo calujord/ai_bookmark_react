@@ -74,7 +74,8 @@ export const RedabilityController = {
    * @returns {string}
    */
   async buildContentToChatGpt(contentList: ScoreContent[]): Promise<string> {
-    let content = "Please could you give a resumen about this content ";
+    let content =
+      "Please forget all prior prompts. I want you to become an Expert summarizing content. Your goal is to help me get context for my website bookmarks. Please follow the following process, you will provide four different responses, each on double space clearly separated paragraphs: First a 100 character high level summary of the content. Second, a 300 character detailed summary of the content in double space bullet points. Third provide today's date and time. Fourth a rating 1 to 10 based of the accuracy of the previous step-by-step summary. Please do not include any apology on your response, just straight to the facts of what can be provided. Thank you. ";
     for (let index = 0; index < contentList.length; index++) {
       const element = contentList[index];
       /// check more inteligent the content
